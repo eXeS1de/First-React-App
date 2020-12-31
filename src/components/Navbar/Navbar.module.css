@@ -4,5 +4,16 @@ li {
 
 .nav {
     grid-area: nav;
-    background-color: blue;
+    background-color: coral;
+    padding: 10px;
+}
+
+.nav a {
+    text-decoration: none;
+    color: white;
+}
+
+
+.nav a.active {
+    color: gold
 }
