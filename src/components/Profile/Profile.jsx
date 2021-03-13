@@ -1,17 +1,15 @@
-import React from 'react'
-import css from './Profile.module.css'
-import MyPosts from './MyPosts/MyPosts'
+import React from 'react';
+import css from './Profile.module.css';
+import MyPosts from './MyPosts/MyPosts';
+import ProfileInfo from './ProfileInfo/ProfileInfo';
 
-const Profile = () => {
-    return (
-        <div className={css.content}>
-            <img src='https://miro.medium.com/max/1200/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg' alt='bg' />
-            <div>
-                ava + description
-            </div>
-            <MyPosts/>
-        </div>
-    )
-}
+const Profile = (props) => {
+  return (
+    <div className={css.content}>
+      <ProfileInfo />
+      <MyPosts posts={props.profilePage.posts} dispatch={props.dispatch} newPostText={props.profilePage.newPostText} />
+    </div>
+  );
+};
 
-export default Profile
+export default Profile;

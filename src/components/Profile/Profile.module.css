@@ -4,5 +4,6 @@
 }
 
 .content img {
-    height: 850px;
+    height: 500px;
+    align-items: center;
 }
