@@ -1,6 +1,5 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { addMessageActionCreator, updateNewMessageTextActionCreator } from "../../Redux/dialogReducer";
 import css from "./Dialogs.module.css";
 
 const DialogItem = (props) => {
@@ -21,19 +20,16 @@ const MessageItem = (props) => {
 }
 
 const Dialogs = (props) => {
-
-  let newMessageElement = React.createRef();
-  
   let dialogsElements = props.dialogsPage.dialogs.map(d => <DialogItem name={d.name} id={d.id} />);
   let messagesElements = props.dialogsPage.messages.map(m => <MessageItem message={m.message} />);
 
   let addMessage = () => {
-    props.dispatch(addMessageActionCreator())
+    props.addMessage()
   }
 
-  let onMessageChange = () => {
-    let text = newMessageElement.current.value
-    props.dispatch(updateNewMessageTextActionCreator(text))
+  let onMessageChange = (e) => {
+    let text = e.target.value
+    props.updateNewMessageText(text)
   }
 
   return (
@@ -45,7 +41,8 @@ const Dialogs = (props) => {
           <div>
             {messagesElements}
           </div>
-          <div><textarea onChange={onMessageChange} ref={newMessageElement} value={props.newMessageText}></textarea></div>
+          <div><textarea onChange={onMessageChange} value={props.newMessageText} 
+          placeholder='Enter The Matrix'></textarea></div>
           <div><button onClick={addMessage}>Send</button></div>
       </div>
     </div>

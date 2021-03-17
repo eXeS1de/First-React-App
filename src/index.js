@@ -1,17 +1,23 @@
-import store from './Redux/state';
+import store from './Redux/redux-store';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import StoreContext from './StoreContext';
 
 let render = (state) => {
     ReactDOM.render(
-        <App state={state} dispatch={store.dispatch.bind(store)} />, document.getElementById('root'));
+        <StoreContext.Provider value={store}>
+            <App />
+        </StoreContext.Provider>, document.getElementById('root'));
 }
 
 render(store.getState());
 
-store.subscribe(render)
+store.subscribe(() => {
+    let state = store.getState();
+    render(state)
+})
 
 
 
