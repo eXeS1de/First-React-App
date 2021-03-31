@@ -12,6 +12,7 @@ let render = () => {
         </Provider>, document.getElementById('root'));
 }
 
+window.store = store;
 render(store.getState());
 
 
