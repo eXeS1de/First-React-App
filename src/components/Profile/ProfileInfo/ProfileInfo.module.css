@@ -1,3 +1,11 @@
-.descriptionBlock {
+.avatar {
+    padding: 10px;
+}
+
+.avatar img {
+    height: 400px;
+}
+
+.description {
     padding: 10px;
 }

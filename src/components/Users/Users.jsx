@@ -1,30 +1,12 @@
-import axios from "axios";
 import React from "react";
 import css from './Users.module.css'
 import userPhoto from '../../assets/images/user-png-image.png'
+import { NavLink } from "react-router-dom";
 
 
-class Users extends React.Component {
-
-    componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${this.props.currentPage}&count=${this.props.pageSize}`)
-        .then(resp => {
-            console.log(resp)
-            this.props.setUsers(resp.data.items)
-            this.props.setUsersCount(resp.data.totalCount)
-        })
-    }
+let Users = (props) => {
     
-    onPageChange = (page) => {
-        this.props.setCurrentPage(page)
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`)
-        .then(resp => {
-            this.props.setUsers(resp.data.items)
-        })
-    }
-    
-    render() {
-        let pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize)
+        let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize)
         let pages = [];
         for (let i = 1; i <= pagesCount; i++) {
             pages.push(i)
@@ -32,29 +14,31 @@ class Users extends React.Component {
 
         return (
             <div>
-                <div>
+                <div className={css.pagination}>
                     {pages.map( p => {
-                       return <span className={this.props.currentPage === p && css.selectedPage}
-                            onClick={ () => { this.onPageChange(p) } }>{p}</span>
+                       return <span className={props.currentPage === p && css.selectedPage}
+                            onClick={ () => { props.onPageChange(p) } }>{p}</span>
                     })}
                 </div>
                { 
-                    this.props.users.map( u => 
-                        <div key={u.id}>
+                    props.users.map( u => 
+                        <div key={u.id} className={css.userBlock}>
                             <span>
-                                <div>
-                                    <img alt='avatar' src={u.photos.small != null ? u.photos.small : userPhoto } className={css.userPhoto} />
+                                <div className={css.name}>{u.name}</div>
+                                <div className={css.users}>
+                                    <NavLink to={'profile/' + u.id}>
+                                        <img alt='avatar' src={ u.photos.small != null ? u.photos.small : userPhoto } className={css.userPhoto} />
+                                    </NavLink>
                                 </div>
-                                <div>
-                                    { u.followed 
-                                    ? <button onClick= { () => {this.props.unfollow(u.id)} }>Unfollow</button> 
-                                    : <button onClick= { () => {this.props.follow(u.id)} }>Follow</button>
-                                }
+                                <div className={css.subscribe}>
+                                    { u.followed
+                                    ? <button disabled={props.followingInProgress.some(id => id === u.id)} onClick= { () => {props.unfollowThunkCreator(u.id)} }>Unfollow</button>
+                                    : <button disabled={props.followingInProgress.some(id => id === u.id)} onClick= { () => {props.followThunkCreator(u.id)} }>Follow</button>
+                                    }
                                 </div>
                             </span>
                             <span>
                                 <span>
-                                    <div>{u.name}</div>
                                     <div>{u.status}</div>
                                 </span>
                                 {/* <span>
@@ -67,7 +51,6 @@ class Users extends React.Component {
                 }
             </div>
         )
-    }
 }
 
 export default Users

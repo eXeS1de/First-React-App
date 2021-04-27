@@ -7,6 +7,22 @@
     font-weight: bold;
 }
 
-.pages {
+.pagination {
     cursor: pointer;
+}
+
+.users img{
+    cursor: help;
+}
+
+.name {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.userBlock {
+    width: 100px;
+    max-width: 250px;
+    text-align: center;
+    display: block;
 }

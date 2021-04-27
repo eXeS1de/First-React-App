@@ -3,6 +3,11 @@
     background-color: black;
 }
 
-header img {
+.header img {
     width: 60px
+}
+
+.loginBlock {
+    float: right;
+    color: white
 }
