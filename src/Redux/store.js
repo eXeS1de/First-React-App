@@ -1,6 +1,5 @@
 import dialogReducer from "./dialogReducer"
 import profileReducer from "./profileReducer"
-import usersReducer from "./usersReducer"
 
 let store = {
     _state: {
