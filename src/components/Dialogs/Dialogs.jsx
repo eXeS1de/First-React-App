@@ -1,5 +1,8 @@
 import React from "react";
+import { Form, Field } from "react-final-form";
 import { NavLink, Redirect } from "react-router-dom";
+import { composeValidators, maxLength, required } from "../../utils/validators/validators";
+import { Textarea } from "../сommon/FormControls/FormControls";
 import css from "./Dialogs.module.css";
 
 const DialogItem = (props) => {
@@ -19,20 +22,38 @@ const MessageItem = (props) => {
   )
 }
 
+const maxLength50 = maxLength(50)
+
+const AddMessageForm = (props) => {
+  return (
+    <Form onSubmit={values => {props.addNewMessage(values.dialogMessage)}}>
+      {({ handleSubmit, pristine, form, submitting }) => (
+        <form onSubmit={handleSubmit}>
+          <div>
+            <Field
+              placeholder="Enter The Matrix"
+              name='dialogMessage' component={Textarea}
+              validate={composeValidators(required,maxLength50)}
+            />
+          </div>
+          <div>
+            <button type="submit">Send</button>
+          </div>
+        </form>
+    )}
+    </Form>
+  )
+}
+
 const Dialogs = (props) => {
   let dialogsElements = props.dialogsPage.dialogs.map(d => <DialogItem name={d.name} id={d.id} />);
   let messagesElements = props.dialogsPage.messages.map(m => <MessageItem message={m.message} />);
 
-  let addMessage = () => {
-    props.addMessage()
-  }
-
-  let onMessageChange = (e) => {
-    let text = e.target.value
-    props.updateNewMessageText(text)
-  }
-
   if (!props.isAuth) return <Redirect to={'/login'} />
+
+  const addNewMessage = (message) => {
+    props.sendMessage(message)
+  }
 
   return (
     <div className={css.dialogs}>
@@ -40,15 +61,13 @@ const Dialogs = (props) => {
         {dialogsElements}
       </div>
       <div className={css.messages}>
-          <div>
-            {messagesElements}
-          </div>
-          <div><textarea onChange={onMessageChange} value={props.newMessageText} 
-          placeholder='Enter The Matrix'></textarea></div>
-          <div><button onClick={addMessage}>Send</button></div>
+        <div>
+          {messagesElements}
+        </div>
+        <AddMessageForm addNewMessage={addNewMessage} />
       </div>
     </div>
   )
-};
+}
   
 export default Dialogs;
